@@ -7,8 +7,7 @@ Inventory: Stores information about the inventory of products in warehouses.
 Warehouses: Stores information about warehouses.
 DeliveryRoutes: Stores information about delivery routes.
 Orders: Stores information about orders placed by customers.
-sql
-Copy code
+
 CREATE DATABASE logistics_management;
 USE logistics_management;
 
@@ -65,22 +64,19 @@ CREATE TABLE Orders (
 Implement Queries
 Optimize Delivery Routes:
 
-sql
-Copy code
+
 SELECT *
 FROM DeliveryRoutes
 ORDER BY Distance ASC;
 Track Shipment Statuses:
 
-sql
-Copy code
+
 SELECT ShipmentID, SupplierID, WarehouseID, ShipmentDate, ArrivalDate, Status
 FROM Shipments
 WHERE Status = 'In Transit';
 Analyze Supplier Performance:
 
-sql
-Copy code
+
 SELECT s.SupplierID, s.Name, COUNT(sh.ShipmentID) AS TotalShipments, AVG(DATEDIFF(sh.ArrivalDate, sh.ShipmentDate)) AS AvgDeliveryTime
 FROM Suppliers s
 JOIN Shipments sh ON s.SupplierID = sh.SupplierID
@@ -88,8 +84,7 @@ GROUP BY s.SupplierID, s.Name;
 Design Stored Procedures and Triggers
 Stored Procedure for Order Processing:
 
-sql
-Copy code
+
 DELIMITER //
 
 CREATE PROCEDURE ProcessOrder(
@@ -119,8 +114,7 @@ END //
 DELIMITER ;
 Trigger for Inventory Replenishment:
 
-sql
-Copy code
+
 CREATE TRIGGER ReplenishInventory
 AFTER UPDATE ON Inventory
 FOR EACH ROW
@@ -134,8 +128,7 @@ END;
 Stored Procedures
 Stored Procedure to Add New Shipment
 
-sql
-Copy code
+
 DELIMITER //
 
 CREATE PROCEDURE AddNewShipment(
@@ -153,8 +146,6 @@ END //
 DELIMITER ;
 Stored Procedure to Update Shipment Status
 
-sql
-Copy code
 DELIMITER //
 
 CREATE PROCEDURE UpdateShipmentStatus(
@@ -170,8 +161,7 @@ END //
 DELIMITER ;
 Stored Procedure to Replenish Inventory
 
-sql
-Copy code
+
 DELIMITER //
 
 CREATE PROCEDURE ReplenishInventory(
@@ -200,8 +190,7 @@ DELIMITER ;
 Triggers
 Trigger to Log Changes in Inventory
 
-sql
-Copy code
+
 CREATE TRIGGER LogInventoryChanges
 AFTER UPDATE ON Inventory
 FOR EACH ROW
@@ -211,8 +200,7 @@ BEGIN
 END;
 Trigger to Automatically Replenish Inventory
 
-sql
-Copy code
+
 CREATE TRIGGER AutoReplenishInventory
 AFTER UPDATE ON Inventory
 FOR EACH ROW
@@ -223,8 +211,7 @@ BEGIN
 END;
 Trigger to Automatically Update Shipment Status to 'Arrived'
 
-sql
-Copy code
+
 CREATE TRIGGER AutoUpdateShipmentStatus
 AFTER UPDATE ON Shipments
 FOR EACH ROW
@@ -238,8 +225,7 @@ END;
 Tables for Logging
 Table to Log Inventory Changes
 
-sql
-Copy code
+
 CREATE TABLE InventoryLog (
     LogID INT PRIMARY KEY AUTO_INCREMENT,
     InventoryID INT,
@@ -252,46 +238,38 @@ CREATE TABLE InventoryLog (
 Sample Queries
 Query to Get Low Stock Inventory Items
 
-sql
-Copy code
+
 SELECT ProductName, Quantity
 FROM Inventory
 WHERE Quantity < 10;
 Query to Get All Shipments by Supplier
 
-sql
-Copy code
+
 SELECT s.Name AS SupplierName, sh.ShipmentID, sh.ShipmentDate, sh.ArrivalDate, sh.Status
 FROM Suppliers s
 JOIN Shipments sh ON s.SupplierID = sh.SupplierID
 ORDER BY sh.ShipmentDate DESC;
 Query to Get All Inventory in a Specific Warehouse
 
-sql
-Copy code
+
 SELECT i.ProductName, i.Quantity
 FROM Inventory i
 WHERE i.WarehouseID = 1;
 Testing the Procedures and Triggers
 Test Adding a New Shipment
 
-sql
-Copy code
+
 CALL AddNewShipment(1, 1, '2024-07-15', '2024-07-20', 'Scheduled');
 Test Updating Shipment Status
 
-sql
-Copy code
+
 CALL UpdateShipmentStatus(1, 'In Transit');
 Test Replenishing Inventory
 
-sql
-Copy code
 CALL ReplenishInventory('Product A', 50, 1);
 Verify Triggers
 
-sql
-Copy code
+
 UPDATE Inventory
 SET Quantity = 5
 WHERE ProductName = 'Product A' AND WarehouseID = 1;
