@@ -1,5 +1,6 @@
 Database Design
-The system includes the following tables:
+    
+-----------------------The system includes the following tables:
 
 Suppliers: Stores information about suppliers.
 Shipments: Stores information about shipments from suppliers.
@@ -7,6 +8,8 @@ Inventory: Stores information about the inventory of products in warehouses.
 Warehouses: Stores information about warehouses.
 DeliveryRoutes: Stores information about delivery routes.
 Orders: Stores information about orders placed by customers.
+
+-----------------------------------------------------
 
 CREATE DATABASE logistics_management;
 USE logistics_management;
@@ -61,8 +64,9 @@ CREATE TABLE Orders (
     Status VARCHAR(50),
     FOREIGN KEY (WarehouseID) REFERENCES Warehouses(WarehouseID)
 );
-Implement Queries
-Optimize Delivery Routes:
+
+--------------Implement Queries
+--------------Optimize Delivery Routes:
 
 
 SELECT *
@@ -74,15 +78,17 @@ Track Shipment Statuses:
 SELECT ShipmentID, SupplierID, WarehouseID, ShipmentDate, ArrivalDate, Status
 FROM Shipments
 WHERE Status = 'In Transit';
-Analyze Supplier Performance:
+
+---------Analyze Supplier Performance:
 
 
 SELECT s.SupplierID, s.Name, COUNT(sh.ShipmentID) AS TotalShipments, AVG(DATEDIFF(sh.ArrivalDate, sh.ShipmentDate)) AS AvgDeliveryTime
 FROM Suppliers s
 JOIN Shipments sh ON s.SupplierID = sh.SupplierID
 GROUP BY s.SupplierID, s.Name;
-Design Stored Procedures and Triggers
-Stored Procedure for Order Processing:
+
+-----------------Design Stored Procedures and Triggers
+------------------Stored Procedure for Order Processing:
 
 
 DELIMITER //
@@ -112,7 +118,9 @@ BEGIN
 END //
 
 DELIMITER ;
-Trigger for Inventory Replenishment:
+
+
+----------------------------Trigger for Inventory Replenishment:
 
 
 CREATE TRIGGER ReplenishInventory
@@ -125,8 +133,8 @@ BEGIN
     END IF;
 END;
 
-Stored Procedures
-Stored Procedure to Add New Shipment
+------------------Stored Procedures
+-------------------Stored Procedure to Add New Shipment
 
 
 DELIMITER //
@@ -144,7 +152,8 @@ BEGIN
 END //
 
 DELIMITER ;
-Stored Procedure to Update Shipment Status
+
+------------------Stored Procedure to Update Shipment Status
 
 DELIMITER //
 
@@ -159,7 +168,8 @@ BEGIN
 END //
 
 DELIMITER ;
-Stored Procedure to Replenish Inventory
+
+--------------------Stored Procedure to Replenish Inventory
 
 
 DELIMITER //
@@ -187,8 +197,9 @@ BEGIN
 END //
 
 DELIMITER ;
-Triggers
-Trigger to Log Changes in Inventory
+
+----------------Triggers
+-----------------Trigger to Log Changes in Inventory
 
 
 CREATE TRIGGER LogInventoryChanges
@@ -222,8 +233,9 @@ BEGIN
         WHERE ShipmentID = NEW.ShipmentID;
     END IF;
 END;
-Tables for Logging
-Table to Log Inventory Changes
+
+----------------Tables for Logging
+----------------Table to Log Inventory Changes
 
 
 CREATE TABLE InventoryLog (
@@ -235,39 +247,46 @@ CREATE TABLE InventoryLog (
     ChangeDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (InventoryID) REFERENCES Inventory(InventoryID)
 );
-Sample Queries
-Query to Get Low Stock Inventory Items
+
+-----------------Sample Queries
+-----------------Query to Get Low Stock Inventory Items
 
 
 SELECT ProductName, Quantity
 FROM Inventory
 WHERE Quantity < 10;
-Query to Get All Shipments by Supplier
+
+-------------------Query to Get All Shipments by Supplier
 
 
 SELECT s.Name AS SupplierName, sh.ShipmentID, sh.ShipmentDate, sh.ArrivalDate, sh.Status
 FROM Suppliers s
 JOIN Shipments sh ON s.SupplierID = sh.SupplierID
 ORDER BY sh.ShipmentDate DESC;
-Query to Get All Inventory in a Specific Warehouse
+
+---------------------Query to Get All Inventory in a Specific Warehouse
 
 
 SELECT i.ProductName, i.Quantity
 FROM Inventory i
 WHERE i.WarehouseID = 1;
-Testing the Procedures and Triggers
-Test Adding a New Shipment
+
+--------------------Testing the Procedures and Triggers
+--------------------Test Adding a New Shipment
 
 
 CALL AddNewShipment(1, 1, '2024-07-15', '2024-07-20', 'Scheduled');
-Test Updating Shipment Status
+
+---------------------Test Updating Shipment Status
 
 
 CALL UpdateShipmentStatus(1, 'In Transit');
-Test Replenishing Inventory
+
+------------------------Test Replenishing Inventory
 
 CALL ReplenishInventory('Product A', 50, 1);
-Verify Triggers
+
+--------------------Verify Triggers
 
 
 UPDATE Inventory
