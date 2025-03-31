@@ -1,7 +1,7 @@
 Logistics and Supply Chain Management System for Electrical Products
 
 Description:
-Developing a comprehensive database management system to enhance logistics and supply chain operations for a company specializing in electrical products. The system includes modules for managing suppliers, tracking shipments, monitoring inventory, organizing warehouses, and optimizing delivery routes.
+Developing a comprehensive database management system to enhance logistics and supply chain operations for a company specializing in diverse products. The system includes modules for managing suppliers, tracking shipments, monitoring inventory, organizing warehouses, and optimizing delivery routes.
 
 Key features:
 
